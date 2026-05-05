@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yug Nirman Shiksha Sansathan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim: #8a6e2f;
+      --cream: #F5F0E8;
+      --ivory: #FAF7F2;
+      --charcoal: #1A1A1A;
+      --deep: #0D0D0D;
+      --mid: #2E2E2E;
+      --muted: #7a7060;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--deep);
+      color: var(--cream);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+      opacity: 0.6;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* Noise Overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 60px;
+      background: linear-gradient(to bottom, rgba(13,13,13,0.95), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(13,13,13,0.97); padding: 18px 60px; }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      line-height: 1.5;
+    }
+    .nav-logo span { display: block; font-size: 9px; letter-spacing: 0.4em; color: var(--muted); font-family: 'Montserrat', sans-serif; }
+
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--cream); opacity: 0.7; text-decoration: none;
+      position: relative; padding-bottom: 4px;
+      transition: opacity 0.3s, color 0.3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold-dim);
+      padding: 10px 24px; text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--deep); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+      padding: 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 80% at 10% 80%, rgba(201,168,76,0.04) 0%, transparent 60%),
+        linear-gradient(135deg, #0D0D0D 0%, #1a1610 50%, #0D0D0D 100%);
+    }
+
+    .hero-line {
+      position: absolute; top: 0; right: 120px; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+      opacity: 0.3;
+    }
+    .hero-line2 {
+      position: absolute; top: 0; right: 240px; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+      opacity: 0.1;
+    }
+
+    .hero-tag {
+      font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 32px;
+      display: flex; align-items: center; gap: 16px;
+      animation: fadeUp 1s ease both;
+    }
+    .hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 7vw, 104px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      max-width: 780px;
+      animation: fadeUp 1s 0.15s ease both;
+    }
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+
+    .hero-sub {
+      font-size: 12px; letter-spacing: 0.18em; color: var(--muted);
+      margin-top: 36px; max-width: 420px; line-height: 2;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+
+    .hero-actions {
+      margin-top: 52px; display: flex; gap: 24px; align-items: center;
+      animation: fadeUp 1s 0.45s ease both;
+    }
+    .btn-primary {
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+      background: var(--gold); color: var(--deep);
+      padding: 16px 40px; text-decoration: none; font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-ghost {
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--cream); opacity: 0.6; text-decoration: none;
+      display: flex; align-items: center; gap: 12px;
+      transition: opacity 0.3s;
+    }
+    .btn-ghost:hover { opacity: 1; }
+    .btn-ghost::after { content: '→'; font-size: 14px; }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 60px;
+      font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted);
+      display: flex; align-items: center; gap: 16px;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+    .hero-scroll::before {
+      content: '';
+      display: block; width: 1px; height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--gold-dim));
+      animation: scrollLine 2s infinite;
+    }
+
+    .hero-year {
+      position: absolute; bottom: 44px; right: 60px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: 0.3em; color: var(--muted);
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      padding: 20px 0;
+      border-top: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      overflow: hidden;
+      background: rgba(201,168,76,0.03);
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 22s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted); padding: 0 48px;
+      display: flex; align-items: center; gap: 48px;
+    }
+    .marquee-item::after { content: '✦'; color: var(--gold); font-size: 10px; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 120px 60px; }
+    .section-label {
+      font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase;
+      color: var(--gold); display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+    }
+    .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4.5vw, 68px);
+      font-weight: 300; line-height: 1.1;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-frame {
+      width: 100%; aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #1e1a12, #2a2318);
+      position: relative; overflow: hidden;
+    }
+    .about-img-frame::before {
+      content: '';
+      position: absolute; inset: 20px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .about-img-frame .inner-art {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-size: 80px; color: rgba(201,168,76,0.08);
+      letter-spacing: -0.02em;
+    }
+
+    .about-ornament {
+      position: absolute; bottom: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: var(--deep);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; letter-spacing: 0.15em; color: var(--gold); text-align: center; line-height: 1.5;
+    }
+
+    .about-content .section-label { margin-top: 0; }
+    .about-text {
+      font-size: 15px; line-height: 2; color: rgba(245,240,232,0.65);
+      margin-top: 28px;
+    }
+    .about-text + .about-text { margin-top: 20px; }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 52px;
+      padding-top: 40px; border-top: 1px solid rgba(201,168,76,0.15);
+    }
+    .stat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px; font-weight: 300; color: var(--gold-light);
+      line-height: 1;
+    }
+    .stat-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+    /* ── PORTFOLIO ── */
+    #portfolio { background: #0a0a08; }
+    .portfolio-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 64px;
+    }
+    .portfolio-filter {
+      display: flex; gap: 8px;
+    }
+    .filter-btn {
+      font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      background: none; border: 1px solid rgba(201,168,76,0.2); color: var(--muted);
+      padding: 8px 20px; cursor: none;
+      transition: all 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+
+    .portfolio-item {
+      position: relative; overflow: hidden;
+      background: #141410;
+      cursor: none;
+    }
+    .portfolio-item:nth-child(1) { grid-column: span 7; grid-row: span 2; aspect-ratio: 16/11; }
+    .portfolio-item:nth-child(2) { grid-column: span 5; aspect-ratio: 4/3; }
+    .portfolio-item:nth-child(3) { grid-column: span 5; aspect-ratio: 4/3; }
+    .portfolio-item:nth-child(4) { grid-column: span 4; aspect-ratio: 3/4; }
+    .portfolio-item:nth-child(5) { grid-column: span 4; aspect-ratio: 3/4; }
+    .portfolio-item:nth-child(6) { grid-column: span 4; aspect-ratio: 3/4; }
+
+    .portfolio-bg {
+      position: absolute; inset: 0;
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .portfolio-item:hover .portfolio-bg { transform: scale(1.06); }
+
+    /* Colored artwork placeholders */
+    .p1 .portfolio-bg { background: linear-gradient(135deg, #1a1508 0%, #2d2412 40%, #1a0e05 100%); }
+    .p2 .portfolio-bg { background: linear-gradient(135deg, #0a1018 0%, #0e1a2a 60%, #08101a 100%); }
+    .p3 .portfolio-bg { background: linear-gradient(225deg, #180a0a 0%, #2a1010 50%, #100808 100%); }
+    .p4 .portfolio-bg { background: linear-gradient(135deg, #0a1208 0%, #101e0c 60%, #080f06 100%); }
+    .p5 .portfolio-bg { background: linear-gradient(135deg, #14100a 0%, #24180c 60%, #0e0c08 100%); }
+    .p6 .portfolio-bg { background: linear-gradient(225deg, #0a0a18 0%, #10102a 60%, #070716 100%); }
+
+    .portfolio-art {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .portfolio-art svg { opacity: 0.18; }
+
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,0.92) 0%, rgba(13,13,13,0.2) 50%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 32px;
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-cat {
+      font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .portfolio-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 300; color: var(--cream);
+    }
+    .portfolio-year { font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.2em; }
+
+    .portfolio-corner {
+      position: absolute; top: 20px; right: 20px;
+      width: 36px; height: 36px;
+      border-top: 1px solid var(--gold); border-right: 1px solid var(--gold);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .portfolio-item:hover .portfolio-corner { opacity: 1; }
+
+    /* ── SERVICES ── */
+    #services {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 80px;
+    }
+    .services-left .section-title { max-width: 320px; }
+    .services-desc { font-size: 14px; line-height: 2; color: var(--muted); margin-top: 28px; }
+    .services-link {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+      text-decoration: none; margin-top: 40px;
+      transition: gap 0.3s;
+    }
+    .services-link:hover { gap: 20px; }
+    .services-link::after { content: '→'; }
+
+    .services-list { display: flex; flex-direction: column; gap: 0; }
+    .service-item {
+      display: grid; grid-template-columns: 60px 1fr auto;
+      align-items: start; gap: 28px;
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      transition: background 0.3s;
+      position: relative;
+    }
+    .service-item::before {
+      content: ''; position: absolute; left: -60px; right: -60px; top: 0; bottom: 0;
+      background: rgba(201,168,76,0.03); opacity: 0; transition: opacity 0.3s;
+    }
+    .service-item:hover::before { opacity: 1; }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px; color: var(--gold-dim); letter-spacing: 0.1em; padding-top: 4px;
+    }
+    .service-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 300; margin-bottom: 10px; color: var(--cream);
+    }
+    .service-info p { font-size: 13px; line-height: 1.8; color: var(--muted); }
+    .service-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .tag {
+      font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+      border: 1px solid rgba(201,168,76,0.2); color: var(--muted);
+      padding: 4px 12px;
+    }
+    .service-arrow {
+      font-size: 20px; color: var(--gold-dim); padding-top: 4px;
+      transition: transform 0.3s, color 0.3s;
+    }
+    .service-item:hover .service-arrow { transform: translate(4px, -4px); color: var(--gold); }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: #0a0a08; text-align: center; }
+    .testimonials-intro { max-width: 640px; margin: 0 auto 72px; }
+    .testimonials-intro .section-label { justify-content: center; }
+    .testimonials-intro .section-label::before { display: none; }
+
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card {
+      background: linear-gradient(135deg, #141208, #1c1810);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 48px 36px; text-align: left; position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .testi-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-4px); }
+    .testi-card::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px; color: var(--gold); opacity: 0.25;
+      position: absolute; top: 16px; left: 28px; line-height: 1;
+    }
+    .testi-text { font-size: 14px; line-height: 1.9; color: rgba(245,240,232,0.65); margin-top: 20px; }
+    .testi-author { margin-top: 32px; display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cinzel', serif; font-size: 14px; color: var(--deep);
+    }
+    .testi-name { font-size: 12px; letter-spacing: 0.15em; color: var(--cream); }
+    .testi-role { font-size: 10px; letter-spacing: 0.2em; color: var(--gold-dim); margin-top: 3px; }
+    .testi-stars { color: var(--gold); font-size: 11px; margin-top: 20px; letter-spacing: 4px; }
+
+    /* ── CONTACT ── */
+    #contact {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+      background: var(--deep);
+    }
+    .contact-left .section-title { max-width: 400px; }
+    .contact-details { margin-top: 48px; display: flex; flex-direction: column; gap: 28px; }
+    .contact-item { display: flex; align-items: flex-start; gap: 20px; }
+    .contact-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border: 1px solid rgba(201,168,76,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--gold);
+    }
+    .contact-info { font-size: 12px; line-height: 1.8; color: var(--muted); }
+    .contact-info strong { display: block; color: var(--cream); font-size: 13px; font-weight: 400; margin-bottom: 2px; letter-spacing: 0.05em; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-dim); }
+    .form-group input, .form-group textarea, .form-group select {
+      background: rgba(201,168,76,0.04);
+      border: 1px solid rgba(201,168,76,0.15);
+      color: var(--cream); padding: 14px 18px;
+      font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300;
+      outline: none; transition: border-color 0.3s;
+      cursor: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--gold);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--charcoal); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .submit-btn {
+      background: var(--gold); color: var(--deep);
+      border: none; padding: 18px 40px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 500;
+      cursor: none; transition: background 0.3s, transform 0.2s;
+      align-self: flex-start; margin-top: 8px;
+    }
+    .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 60px 60px 40px;
+      border-top: 1px solid rgba(201,168,76,0.12);
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+    }
+    .footer-brand .logo-text {
+      font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 0.2em; color: var(--gold);
+      line-height: 1.5;
+    }
+    .footer-brand p { font-size: 12px; line-height: 1.9; color: var(--muted); margin-top: 16px; max-width: 260px; }
+    .footer-col h4 { font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .footer-col ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      padding: 28px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(201,168,76,0.08);
+    }
+    .footer-bottom p { font-size: 10px; letter-spacing: 0.15em; color: rgba(122,112,96,0.6); }
+    .footer-socials { display: flex; gap: 16px; }
+    .footer-socials a {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: var(--muted); text-decoration: none;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .footer-socials a:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes scrollLine {
+      0%   { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50%  { opacity: 1; }
+      100% { opacity: 0; transform: scaleY(1); transform-origin: top; }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links, .nav-cta { display: none; }
+      section { padding: 80px 24px; }
+      #hero { padding: 0 24px; }
+      #about { grid-template-columns: 1fr; gap: 40px; }
+      #services { grid-template-columns: 1fr; gap: 40px; }
+      #contact { grid-template-columns: 1fr; gap: 40px; }
+      .portfolio-item:nth-child(1) { grid-column: span 12; }
+      .portfolio-item:nth-child(n+2) { grid-column: span 6; }
+      .testi-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .portfolio-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">
+      Yug Nirman
+      <span>Shiksha Sansathan</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Enquire Now</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line2"></div>
+
+    <div class="hero-tag">Est. 2008 &nbsp;·&nbsp; Excellence in Education</div>
+    <h1 class="hero-title">
+      Shaping <em>Minds,</em><br>Building <em>Futures</em>
+    </h1>
+    <p class="hero-sub">
+      A premier institution dedicated to nurturing knowledge, culture, and character — cultivating leaders for a new era.
+    </p>
+    <div class="hero-actions">
+      <a href="#portfolio" class="btn-primary">View Our Work</a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+
+    <div class="hero-scroll">Scroll to explore</div>
+    <div class="hero-year">Since 2008</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="marquee-item">Academic Excellence</div>
+      <div class="marquee-item">Cultural Heritage</div>
+      <div class="marquee-item">Holistic Development</div>
+      <div class="marquee-item">Nation Building</div>
+      <div class="marquee-item">Yug Nirman Shiksha Sansathan</div>
+      <div class="marquee-item">Academic Excellence</div>
+      <div class="marquee-item">Cultural Heritage</div>
+      <div class="marquee-item">Holistic Development</div>
+      <div class="marquee-item">Nation Building</div>
+      <div class="marquee-item">Yug Nirman Shiksha Sansathan</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-visual reveal">
+      <div class="about-img-frame">
+        <div class="inner-art">ज्ञान</div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06" viewBox="0 0 400 500">
+          <circle cx="200" cy="250" r="150" fill="none" stroke="#C9A84C" stroke-width="1"/>
+          <circle cx="200" cy="250" r="100" fill="none" stroke="#C9A84C" stroke-width="0.5"/>
+          <circle cx="200" cy="250" r="50" fill="none" stroke="#C9A84C" stroke-width="0.5"/>
+          <line x1="50" y1="250" x2="350" y2="250" stroke="#C9A84C" stroke-width="0.5"/>
+          <line x1="200" y1="100" x2="200" y2="400" stroke="#C9A84C" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="about-ornament">15+<br/>Years of<br/>Legacy</div>
+    </div>
+    <div class="about-content">
+      <div class="section-label reveal">Our Story</div>
+      <h2 class="section-title reveal reveal-delay-1">Where <em>Knowledge</em><br>Meets <em>Purpose</em></h2>
+      <p class="about-text reveal reveal-delay-2">
+        Yug Nirman Shiksha Sansathan was founded with a singular vision — to create an institution that transcends conventional education and inspires a generation of thinkers, creators, and compassionate leaders.
+      </p>
+      <p class="about-text reveal reveal-delay-3">
+        Rooted in India's rich intellectual tradition and guided by the philosophy of holistic development, we integrate academic rigor with cultural wisdom, empowering every student to discover their highest potential.
+      </p>
+      <div class="about-stats reveal">
+        <div>
+          <div class="stat-val">5K+</div>
+          <div class="stat-label">Students Shaped</div>
+        </div>
+        <div>
+          <div class="stat-val">80+</div>
+          <div class="stat-label">Expert Faculty</div>
+        </div>
+        <div>
+          <div class="stat-val">98%</div>
+          <div class="stat-label">Success Rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="portfolio-header">
+      <div>
+        <div class="section-label reveal">Our Portfolio</div>
+        <h2 class="section-title reveal reveal-delay-1">Captured <em>Moments,</em><br>Lasting <em>Impact</em></h2>
+      </div>
+      <div class="portfolio-filter reveal">
+        <button class="filter-btn active" onclick="filterPortfolio('all', this)">All</button>
+        <button class="filter-btn" onclick="filterPortfolio('events', this)">Events</button>
+        <button class="filter-btn" onclick="filterPortfolio('academic', this)">Academic</button>
+        <button class="filter-btn" onclick="filterPortfolio('cultural', this)">Cultural</button>
+      </div>
+    </div>
+
+    <div class="portfolio-grid" id="portfolioGrid">
+      <div class="portfolio-item p1 reveal" data-cat="cultural">
+        <div class="portfolio-bg"></div>
+        <div class="portfolio-art">
+          <svg width="200" height="200" viewBox="0 0 200 200"><polygon points="100,20 180,80 150,170 50,170 20,80" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="100" cy="100" r="40" fill="none" stroke="#C9A84C" stroke-width="1"/></svg>
+        </div>
+        <div class="portfolio-corner"></div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-cat">Cultural</div>
+          <div class="portfolio-name">Annual Utsav Celebration</div>
+          <div class="portfolio-year">2024</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item p2 reveal reveal-delay-1" data-cat="academic">
+        <div class="portfolio-bg"></div>
+        <div class="portfolio-art">
+          <svg width="120" height="120" viewBox="0 0 120 120"><rect x="20" y="20" width="80" height="80" fill="none" stroke="#C9A84C" stroke-width="1.5"/><rect x="35" y="35" width="50" height="50" fill="none" stroke="#C9A84C" stroke-width="0.8"/><line x1="60" y1="20" x2="60" y2="100" stroke="#C9A84C" stroke-width="0.5"/></svg>
+        </div>
+        <div class="portfolio-corner"></div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-cat">Academic</div>
+          <div class="portfolio-name">Excellence Awards 2024</div>
+          <div class="portfolio-year">2024</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item p3 reveal reveal-delay-2" data-cat="events">
+        <div class="portfolio-bg"></div>
+        <div class="portfolio-art">
+          <svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="40" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="60" cy="60" r="20" fill="none" stroke="#C9A84C" stroke-width="0.8"/><circle cx="60" cy="60" r="5" fill="#C9A84C" opacity="0.4"/></svg>
+        </div>
+        <div class="portfolio-corner"></div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-cat">Events</div>
+          <div class="portfolio-name">Founder's Day Ceremony</div>
+          <div class="portfolio-year">2023</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item p4 reveal" data-cat="cultural">
+        <div class="portfolio-bg"></div>
+        <div class="portfolio-art">
+          <svg width="100" height="120" viewBox="0 0 100 120"><path d="M50 10 L90 90 L10 90 Z" fill="none" stroke="#C9A84C" stroke-width="1.5"/><path d="M50 30 L75 80 L25 80 Z" fill="none" stroke="#C9A84C" stroke-width="0.8"/></svg>
+        </div>
+        <div class="portfolio-corner"></div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-cat">Cultural</div>
+          <div class="portfolio-name">Classical Dance Showcase</div>
+          <div class="portfolio-year">2024</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item p5 reveal reveal-delay-1" data-cat="academic">
+        <div class="portfolio-bg"></div>
+        <div class="portfolio-art">
+          <svg width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="none" stroke="#C9A84C" stroke-width="1.5" rx="8"/><path d="M30 50 L45 65 L70 35" fill="none" stroke="#C9A84C" stroke-width="2"/></svg>
+        </div>
+        <div class="portfolio-corner"></div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-cat">Academic</div>
+          <div class="portfolio-name">Board Results Felicitation</div>
+          <div class="portfolio-year">2023</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item p6 reveal reveal-delay-2" data-cat="events">
+        <div class="portfolio-bg"></div>
+        <div class="portfolio-art">
+          <svg width="100" height="100" viewBox="0 0 100 100"><line x1="10" y1="50" x2="90" y2="50" stroke="#C9A84C" stroke-width="1.5"/><line x1="50" y1="10" x2="50" y2="90" stroke="#C9A84C" stroke-width="1.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="#C9A84C" stroke-width="0.8"/></svg>
+        </div>
+        <div class="portfolio-corner"></div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-cat">Events</div>
+          <div class="portfolio-name">Science Exhibition 2023</div>
+          <div class="portfolio-year">2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-left">
+      <div class="section-label reveal">What We Offer</div>
+      <h2 class="section-title reveal reveal-delay-1">Our Core <em>Disciplines</em></h2>
+      <p class="services-desc reveal reveal-delay-2">
+        Every programme at Yug Nirman is crafted to nurture excellence in thought, spirit, and action.
+      </p>
+      <a href="#contact" class="services-link reveal reveal-delay-3">Enquire about admissions</a>
+    </div>
+    <div class="services-list">
+      <div class="service-item reveal">
+        <div class="service-num">01</div>
+        <div class="service-info">
+          <h3>Primary & Secondary Education</h3>
+          <p>A rigorous academic foundation blending modern curriculum with classical Indian wisdom, guided by expert educators.</p>
+          <div class="service-tags">
+            <span class="tag">CBSE Affiliated</span>
+            <span class="tag">Value-Based</span>
+            <span class="tag">Inquiry Learning</span>
+          </div>
+        </div>
+        <div class="service-arrow">↗</div>
+      </div>
+      <div class="service-item reveal reveal-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-info">
+          <h3>Arts & Cultural Studies</h3>
+          <p>Preserving and celebrating India's heritage through music, classical dance, fine arts, and Sanskrit literature.</p>
+          <div class="service-tags">
+            <span class="tag">Classical Arts</span>
+            <span class="tag">Sanskrit</span>
+            <span class="tag">Heritage</span>
+          </div>
+        </div>
+        <div class="service-arrow">↗</div>
+      </div>
+      <div class="service-item reveal reveal-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-info">
+          <h3>Vocational & Skill Development</h3>
+          <p>Practical training programmes equipping students with life skills, entrepreneurship, and career-readiness for the modern world.</p>
+          <div class="service-tags">
+            <span class="tag">Skill India</span>
+            <span class="tag">Entrepreneurship</span>
+            <span class="tag">Digital Literacy</span>
+          </div>
+        </div>
+        <div class="service-arrow">↗</div>
+      </div>
+      <div class="service-item reveal reveal-delay-3">
+        <div class="service-num">04</div>
+        <div class="service-info">
+          <h3>Yoga & Wellness</h3>
+          <p>Integrating ancient practices of yoga, meditation, and mindfulness to cultivate physical, mental, and spiritual wellbeing.</p>
+          <div class="service-tags">
+            <span class="tag">Yoga</span>
+            <span class="tag">Mindfulness</span>
+            <span class="tag">Holistic Health</span>
+          </div>
+        </div>
+        <div class="service-arrow">↗</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="testimonials-intro">
+      <div class="section-label reveal">Testimonials</div>
+      <h2 class="section-title reveal reveal-delay-1">Voices of <em>Trust</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Yug Nirman has transformed my daughter entirely. The balance of academics and cultural values is unmatched. She graduated with distinction and a confident, compassionate worldview.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SR</div>
+          <div>
+            <div class="testi-name">Sunita Rastogi</div>
+            <div class="testi-role">Parent · Batch 2022</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">The faculty here are not just teachers — they are mentors and guides. The institution fosters a love of learning that stays with you for life. Truly a place of light and wisdom.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AK</div>
+          <div>
+            <div class="testi-name">Arvind Kumar</div>
+            <div class="testi-role">Alumni · Batch 2019</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">A rare institution that blends the best of modern education with the depth of Indian philosophy. My son is now pursuing medicine and credits his disciplined foundation to Yug Nirman.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PM</div>
+          <div>
+            <div class="testi-name">Priya Mehta</div>
+            <div class="testi-role">Parent · Batch 2021</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-left">
+      <div class="section-label reveal">Get In Touch</div>
+      <h2 class="section-title reveal reveal-delay-1">Begin Your <em>Journey</em><br>With Us</h2>
+      <div class="contact-details">
+        <div class="contact-item reveal reveal-delay-1">
+          <div class="contact-icon">✦</div>
+          <div class="contact-info">
+            <strong>Address</strong>
+            Yug Nirman Shiksha Sansathan<br>
+            Education Campus, India
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-2">
+          <div class="contact-icon">✉</div>
+          <div class="contact-info">
+            <strong>Email</strong>
+            info@yugnirman.edu.in
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-3">
+          <div class="contact-icon">☎</div>
+          <div class="contact-info">
+            <strong>Phone</strong>
+            +91 XXXXX XXXXX
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal reveal-delay-1">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Your first name"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Your last name"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Enquiry Type</label>
+        <select>
+          <option value="">Select enquiry type</option>
+          <option>Admission Enquiry</option>
+          <option>Academic Programme</option>
+          <option>Cultural Activities</option>
+          <option>General Information</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us how we can help you…"></textarea>
+      </div>
+      <button class="submit-btn" onclick="handleSubmit(this)">Send Enquiry →</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <div class="logo-text">Yug Nirman<br>Shiksha Sansathan</div>
+      <p>Nurturing minds, preserving heritage, and building the leaders of tomorrow since 2008.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#portfolio">Gallery</a></li>
+        <li><a href="#services">Programmes</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Programmes</h4>
+      <ul>
+        <li><a href="#">Primary School</a></li>
+        <li><a href="#">Secondary School</a></li>
+        <li><a href="#">Arts & Culture</a></li>
+        <li><a href="#">Skill Development</a></li>
+        <li><a href="#">Yoga & Wellness</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2024 Yug Nirman Shiksha Sansathan. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="#">f</a>
+      <a href="#">in</a>
+      <a href="#">yt</a>
+    </div>
+  </div>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+    function animRing() {
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a, button, .portfolio-item, .filter-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.4'; });
+      el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.6'; });
+    });
+
+    // Scroll nav
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Portfolio filter
+    function filterPortfolio(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.portfolio-item').forEach(item => {
+        const match = cat === 'all' || item.dataset.cat === cat;
+        item.style.opacity = match ? '1' : '0.2';
+        item.style.transform = match ? 'scale(1)' : 'scale(0.97)';
+        item.style.transition = 'opacity 0.4s, transform 0.4s';
+      });
+    }
+
+    // Form submit
+    function handleSubmit(btn) {
+      btn.textContent = 'Sending…';
+      btn.style.opacity = '0.7';
+      setTimeout(() => {
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = '#2a4a2a';
+        btn.style.color = '#7ec87e';
+        btn.style.opacity = '1';
+      }, 1800);
+    }
+  </script>
+</body>
+</html>
